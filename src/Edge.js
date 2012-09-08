@@ -6,5 +6,8 @@ var CanvizEdge = exports.CanvizEdge = function(name, canviz, rootGraph, parentGr
     this.headNode = headNode;
 };
 _.extend(CanvizEdge.prototype, CanvizEntity.prototype, {
-	escStringMatchRe: /\\([EGTHL])/g
+	escStringMatchRe: /\\([EGTHL])/g,
+    draw: function() {
+        CanvizEntity.prototype.draw.apply(this, arguments);
+    }
 });

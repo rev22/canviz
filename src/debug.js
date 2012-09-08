@@ -8,3 +8,7 @@ var debug = exports.debug = function(str, escape) {
 	}
 	$('debug_output').innerHTML += '&raquo;' + str + '&laquo;<br />';
 };
+
+var debugClear = exports.debugClear = function() {
+    $('debug_output').innerHTML = '';
+};

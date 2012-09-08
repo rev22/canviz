@@ -57,7 +57,7 @@ Canviz.prototype = {
 		this.imagePath = imagePath;
 	},
 	load: function(url, urlParams) {
-		$('debug_output').innerHTML = '';
+        debugClear();
         $.ajax({
             url: url,
 			data: urlParams,
@@ -67,6 +67,13 @@ Canviz.prototype = {
 		});
 	},
 	parse: function(xdot) {
+        if (this.oldXdot && this.oldXdot === xdot) return;
+        this.oldXdot = xdot;
+
+        this.oldGraphs = this.graphs;
+        if (this.oldGraphs && this.oldGraphs.length)
+            this.animateBetweenStates();
+
 		this.graphs = [];
 		this.width = 0;
 		this.height = 0;
@@ -221,7 +228,36 @@ Canviz.prototype = {
 //		debug('done');
 		this.draw();
 	},
+    animateBetweenStates: function() {
+        this.animationDelta = 0;
+
+        if (this.interval)
+            clearInterval(this.interval);
+
+        var oldRects = {};
+        function walk(graph) {
+            _.each([graph.nodes, graph.edges], function(entities) {
+                _.each(entities, function(node) {
+                    oldRects[node.name] = node.bbRect;
+                });
+            });
+            // TODO: subgraphs
+        }
+        walk(this.graphs[0]);
+        this.oldRects = oldRects;
+
+        this.interval = setInterval(_.bind(function() {
+            this.animationDelta += 0.06;
+            if (this.animationDelta >= 1) {
+                delete this.animationDelta;
+                clearInterval(this.interval);
+            }
+            this.draw();
+        }, this), 15);
+    },
 	draw: function(redrawCanvasOnly) {
+        if (this.count === undefined)
+            this.count = 1;
 		if ('undefined' === typeof redrawCanvasOnly) redrawCanvasOnly = false;
 		var ctxScale = this.scale * this.dpi / 72;
 		var width  = Math.round(ctxScale * this.width  + 2 * this.padding);
@@ -248,7 +284,26 @@ Canviz.prototype = {
 		this.graphs[0].draw(this.ctx, ctxScale, redrawCanvasOnly);
 		this.ctx.restore();
 	},
-	drawPath: function(ctx, path, filled, dashStyle) {
+	drawPath: function(ctx, path, filled, dashStyle, entity) {
+        var self = this;
+        var didTranslate = false;
+        if (entity && typeof this.animationDelta !== 'undefined') {
+            var newRect = entity.bbRect;
+            var oldRect = this.oldRects[entity.name];
+            function interp(a, b) {
+                return (b - a) * (1-self.animationDelta);
+            }
+
+            if (oldRect && newRect) {
+                var xOff = interp(oldRect.l, newRect.l),
+                    yOff = interp(oldRect.t, newRect.t);
+
+                didTranslate = true;
+                ctx.save();
+                ctx.translate(-xOff, -yOff);
+            }
+        }
+
 		if (filled) {
 			ctx.beginPath();
 			path.makePath(ctx);
@@ -276,6 +331,9 @@ Canviz.prototype = {
 			ctx.stroke();
 			if (oldLineWidth) ctx.lineWidth = oldLineWidth;
 		}
+
+        if (didTranslate)
+            ctx.restore();
 	},
 	unescape: function(str) {
 		var matches = str.match(/^"(.*)"$/);

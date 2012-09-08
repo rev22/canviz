@@ -238,17 +238,32 @@ CanvizEntity.prototype = {
 							return;
 					}
 					if (path) {
-						this.canviz.drawPath(ctx, path, filled, dashStyle);
+						this.canviz.drawPath(ctx, path, filled, dashStyle, this);
 						if (!redrawCanvasOnly) this.bbRect.expandToInclude(path.getBB());
 						path = undefined;
 					}
 					token = tokenizer.takeChars();
 				}
 				if (!redrawCanvasOnly) {
+                    var xOff = 0, yOff = 0;
+                    /*
+                    if (this.canviz && this.canviz.animationDelta !== 'undefined' && this.canviz.oldRects) {
+                        var oldRect = this.canviz.oldRects[this.name];
+                        var newRect = this.bbRect;
+                        function interp(a, b) {
+                            return (b - a) * (1-this.canviz.animationDelta);
+                        }
+
+                        if (oldRect && newRect) {
+                            xOff = interp(oldRect.l, newRect.l);
+                            yOff = interp(oldRect.t, newRect.t);
+                        }
+                    }
+                    */
 					bbDiv.css({
 						position: 'absolute',
-						left:   Math.round(ctxScale * this.bbRect.l + this.canviz.padding) + 'px',
-						top:    Math.round(ctxScale * this.bbRect.t + this.canviz.padding) + 'px',
+                        left:   Math.round(ctxScale * (this.bbRect.l + xOff) + this.canviz.padding) + 'px',
+                        top:    Math.round(ctxScale * (this.bbRect.t + yOff) + this.canviz.padding) + 'px',
 						width:  Math.round(ctxScale * this.bbRect.getWidth()) + 'px',
 						height: Math.round(ctxScale * this.bbRect.getHeight()) + 'px'
 					});

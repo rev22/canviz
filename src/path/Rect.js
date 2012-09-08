@@ -47,3 +47,6 @@ Rect.prototype.setupSegments = function() {
 		];
 		Polygon.prototype.setupSegments.call(this);
 };
+Rect.prototype.toString = function() {
+    return '<Rect (' + [this.l, this.t, this.r, this.b].join(", ") + ')>';
+};
