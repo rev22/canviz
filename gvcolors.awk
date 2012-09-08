@@ -1,6 +1,6 @@
 #
 # This file is part of Canviz. See http://www.canviz.org/
-# $Id: gvcolors.awk 246 2008-12-27 08:36:24Z ryandesign.com $
+# $Id: gvcolors.awk 304 2011-12-16 15:04:58Z ryandesign.com $
 #
  
 BEGIN { 
@@ -9,7 +9,7 @@ BEGIN {
 	print " * $I" "d$"
 	print " */"
 	print ""
-	print "Canviz.prototype.colors.update({"
+	print "Canviz.prototype.addColors({"
 	last_color_scheme = ""
 }
 

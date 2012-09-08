@@ -1,9 +1,9 @@
 /*
  * This file is part of Canviz. See http://www.canviz.org/
- * $Id: x11colors.js 246 2008-12-27 08:36:24Z ryandesign.com $
+ * $Id: x11colors.js 304 2011-12-16 15:04:58Z ryandesign.com $
  */
 
-Canviz.prototype.colors.update({
+Canviz.prototype.addColors({
 x11:{
 aliceblue:'f0f8ff',
 antiquewhite:'faebd7',
