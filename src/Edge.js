@@ -1,12 +1,10 @@
 //#include 'Entity.js'
 
-var CanvizEdge = exports.CanvizEdge = Class.create(CanvizEntity, {
-	initialize: function($super, name, canviz, rootGraph, parentGraph, tailNode, headNode) {
-		$super('edgeAttrs', name, canviz, rootGraph, parentGraph, parentGraph);
-		this.tailNode = tailNode;
-		this.headNode = headNode;
-	}
-});
-Object.extend(CanvizEdge.prototype, {
+var CanvizEdge = exports.CanvizEdge = function(name, canviz, rootGraph, parentGraph, tailNode, headNode) {
+    CanvizEntity.call(this, 'edgeAttrs', name, canviz, rootGraph, parentGraph, parentGraph);
+    this.tailNode = tailNode;
+    this.headNode = headNode;
+};
+_.extend(CanvizEdge.prototype, CanvizEntity.prototype, {
 	escStringMatchRe: /\\([EGTHL])/g
 });

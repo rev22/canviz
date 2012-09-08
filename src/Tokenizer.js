@@ -1,7 +1,8 @@
-var CanvizTokenizer = exports.CanvizTokenizer = Class.create({
-	initialize: function(str) {
-		this.str = str;
-	},
+var CanvizTokenizer = exports.CanvizTokenizer = function(str) {
+    this.str = str;
+};
+
+CanvizTokenizer.prototype = {
 	takeChars: function(num) {
 		if (!num) {
 			num = 1;
@@ -56,4 +57,4 @@ var CanvizTokenizer = exports.CanvizTokenizer = Class.create({
 		this.str = this.str.substr(1 + charCount).replace(/^\s+/, '');
 		return str;
 	}
-});
+};

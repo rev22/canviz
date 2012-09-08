@@ -4,7 +4,7 @@ var debug = exports.debug = function(str, escape) {
 		escape = true;
 	}
 	if (escape) {
-		str = str.escapeHTML();
+        str = _.str.escapeHTML(str);
 	}
 	$('debug_output').innerHTML += '&raquo;' + str + '&laquo;<br />';
 };

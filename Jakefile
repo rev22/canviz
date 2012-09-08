@@ -65,7 +65,12 @@ file('build/canviz.min.js', ['build/canviz.js'], function() {
     mangle_options: {except: ['$super']},
     gen_options: {ascii_only: true},
   };
-  var minified_code = uglify(code, uglify_options);
+  try {
+      var minified_code = uglify(code, uglify_options);
+  } catch(e) {
+      console.log("PARSE ERROR", e);
+      throw e;
+  }
   fs.writeFileSync('build/canviz.min.js', minified_code, 'utf8');
 });
 

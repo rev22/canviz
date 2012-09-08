@@ -6,17 +6,18 @@
 //#include 'path/Rect.js'
 //#include 'Tokenizer.js'
 
-var CanvizEntity = exports.CanvizEntity = Class.create({
-	initialize: function(defaultAttrHashName, name, canviz, rootGraph, parentGraph, immediateGraph) {
-		this.defaultAttrHashName = defaultAttrHashName;
-		this.name = name;
-		this.canviz = canviz;
-		this.rootGraph = rootGraph;
-		this.parentGraph = parentGraph;
-		this.immediateGraph = immediateGraph;
-		this.attrs = $H();
-		this.drawAttrs = $H();
-	},
+var CanvizEntity = exports.CanvizEntity = function(defaultAttrHashName, name, canviz, rootGraph, parentGraph, immediateGraph) {
+    this.defaultAttrHashName = defaultAttrHashName;
+    this.name = name;
+    this.canviz = canviz;
+    this.rootGraph = rootGraph;
+    this.parentGraph = parentGraph;
+    this.immediateGraph = immediateGraph;
+    this.attrs = {};
+    this.drawAttrs = {};
+};
+
+CanvizEntity.prototype = {
 	initBB: function() {
 		var matches = this.getAttr('pos').match(/([0-9.]+),([0-9.]+)/);
 		var x = Math.round(matches[1]);
@@ -25,11 +26,11 @@ var CanvizEntity = exports.CanvizEntity = Class.create({
 	},
 	getAttr: function(attrName, escString) {
 		if ('undefined' === typeof escString) escString = false;
-		var attrValue = this.attrs.get(attrName);
+		var attrValue = this.attrs[attrName];
 		if ('undefined' === typeof attrValue) {
 			var graph = this.parentGraph;
 			while ('undefined' !== typeof graph) {
-				attrValue = graph[this.defaultAttrHashName].get(attrName);
+				attrValue = graph[this.defaultAttrHashName][attrName];
 				if ('undefined' === typeof attrValue) {
 					graph = graph.parentGraph;
 				} else {
@@ -38,7 +39,7 @@ var CanvizEntity = exports.CanvizEntity = Class.create({
 			}
 		}
 		if (attrValue && escString) {
-			attrValue = attrValue.replace(this.escStringMatchRe, function(match, p1) {
+			attrValue = attrValue.replace(this.escStringMatchRe, _.bind(function(match, p1) {
 				switch (p1) {
 					case 'N': // fall through
 					case 'E': return this.name;
@@ -48,7 +49,7 @@ var CanvizEntity = exports.CanvizEntity = Class.create({
 					case 'L': return this.getAttr('label', true);
 				}
 				return match;
-			}.bind(this));
+			}, this));
 		}
 		return attrValue;
 	},
@@ -56,11 +57,10 @@ var CanvizEntity = exports.CanvizEntity = Class.create({
 		var i, tokens, fillColor, strokeColor;
 		if (!redrawCanvasOnly) {
 			this.initBB();
-			var bbDiv = new Element('div');
-			this.canviz.elements.appendChild(bbDiv);
+            var bbDiv = $('<div>');
+			this.canviz.elements.append(bbDiv);
 		}
-		this.drawAttrs.each(function(drawAttr) {
-			var command = drawAttr.value;
+		_.each(this.drawAttrs, _.bind(function(command) {
 //			debug(command);
 			var tokenizer = new CanvizTokenizer(command);
 			var token = tokenizer.takeChars();
@@ -134,7 +134,7 @@ var CanvizEntity = exports.CanvizEntity = Class.create({
 							var str = tokenizer.takeString();
 							if (!redrawCanvasOnly && !/^\s*$/.test(str)) {
 //								debug('draw text ' + str + ' ' + l + ' ' + t + ' ' + textAlign + ' ' + textWidth);
-								str = str.escapeHTML();
+								str = _.str.escapeHTML(str);
 								do {
 									matches = str.match(/ ( +)/);
 									if (matches) {
@@ -151,21 +151,21 @@ var CanvizEntity = exports.CanvizEntity = Class.create({
 									var target = this.getAttr('target', true) || '_self';
 									var tooltip = this.getAttr('tooltip', true) || this.getAttr('label', true);
 //									debug(this.name + ', href ' + href + ', target ' + target + ', tooltip ' + tooltip);
-									text = new Element('a', {href: href, target: target, title: tooltip});
-									['onclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout'].each(function(attrName) {
+                                    text = $('<a>').attrs({href: href, target: target, title: tooltip});
+									_.each(['onclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout'], _.bind(function(attrName) {
 										var attrValue = this.getAttr(attrName, true);
 										if (attrValue) {
 											text.writeAttribute(attrName, attrValue);
 										}
-									}.bind(this));
-									text.setStyle({
+									}, this));
+                                    text.css({
 										textDecoration: 'none'
 									});
 								} else {
-									text = new Element('span');
+                                    text = $('<span>');
 								}
-								text.update(str);
-								text.setStyle({
+								text.text(str);
+                                text.css({
 									fontSize: Math.round(fontSize * ctxScale * this.canviz.bbScale) + 'px',
 									fontFamily: fontFamily,
 									color: strokeColor.textColor,
@@ -175,8 +175,9 @@ var CanvizEntity = exports.CanvizEntity = Class.create({
 									top: t + 'px',
 									width: (2 * textWidth) + 'px'
 								});
-								if (1 != strokeColor.opacity) text.setOpacity(strokeColor.opacity);
-								this.canviz.elements.appendChild(text);
+								if (1 !== strokeColor.opacity)
+                                    text.setOpacity(strokeColor.opacity);
+                                $(this.canviz.elements).append(text);
 							}
 							break;
 						case 'C': // set fill color
@@ -244,7 +245,7 @@ var CanvizEntity = exports.CanvizEntity = Class.create({
 					token = tokenizer.takeChars();
 				}
 				if (!redrawCanvasOnly) {
-					bbDiv.setStyle({
+					bbDiv.css({
 						position: 'absolute',
 						left:   Math.round(ctxScale * this.bbRect.l + this.canviz.padding) + 'px',
 						top:    Math.round(ctxScale * this.bbRect.t + this.canviz.padding) + 'px',
@@ -254,7 +255,7 @@ var CanvizEntity = exports.CanvizEntity = Class.create({
 				}
 				ctx.restore();
 			}
-		}.bind(this));
+        }, this));
 	},
 	parseColor: function(color) {
 		var parsedColor = {opacity: 1};
@@ -286,14 +287,14 @@ var CanvizEntity = exports.CanvizEntity = Class.create({
 		}
 		colorName = colorName.toLowerCase();
 		var colorSchemeName = colorScheme.toLowerCase();
-		var colorSchemeData = Canviz.prototype.colors.get(colorSchemeName);
+		var colorSchemeData = Canviz.prototype.colors[colorSchemeName];
 		if (colorSchemeData) {
 			var colorData = colorSchemeData[colorName];
 			if (colorData) {
 				return this.canviz.parseHexColor('#' + colorData);
 			}
 		}
-		colorData = Canviz.prototype.colors.get('fallback')[colorName];
+		colorData = Canviz.prototype.colors['fallback'][colorName];
 		if (colorData) {
 			return this.canviz.parseHexColor('#' + colorData);
 		}
@@ -305,4 +306,4 @@ var CanvizEntity = exports.CanvizEntity = Class.create({
 		parsedColor.canvasColor = parsedColor.textColor = '#000000';
 		return parsedColor;
 	}
-});
+};

@@ -1,17 +1,18 @@
 //#include 'debug.js'
 //#include 'path/Rect.js'
 
-var CanvizImage = exports.CanvizImage = Class.create({
-	initialize: function(canviz, src) {
-		this.canviz = canviz;
-		++this.canviz.numImages;
-		this.finished = this.loaded = false;
-		this.img = new Image();
-		this.img.onload = this.onLoad.bind(this);
-		this.img.onerror = this.onFinish.bind(this);
-		this.img.onabort = this.onFinish.bind(this);
-		this.img.src = this.canviz.imagePath + src;
-	},
+var CanvizImage = exports.CanvizImage = function(canviz, src) {
+    this.canviz = canviz;
+    ++this.canviz.numImages;
+    this.finished = this.loaded = false;
+    this.img = new Image();
+    this.img.onload = this.onLoad.bind(this);
+    this.img.onerror = this.onFinish.bind(this);
+    this.img.onabort = this.onFinish.bind(this);
+    this.img.src = this.canviz.imagePath + src;
+};
+
+CanvizImage.prototype = {
 	onLoad: function() {
 		this.loaded = true;
 		this.onFinish();
@@ -46,4 +47,4 @@ var CanvizImage = exports.CanvizImage = Class.create({
 		ctx.stroke();
 		ctx.restore();
 	}
-});
+};
