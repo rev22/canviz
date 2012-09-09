@@ -36,6 +36,7 @@ var Canviz = exports.Canviz = function(container, url, urlParams) {
     this.images = {};
     this.numImages = 0;
     this.numImagesFinished = 0;
+    this.animation = false;
     if (url) {
         this.load(url, urlParams);
     }
@@ -67,11 +68,8 @@ Canviz.prototype = {
 		});
 	},
 	parse: function(xdot) {
-        if (this.oldXdot && this.oldXdot === xdot) return;
-        this.oldXdot = xdot;
-
         this.oldGraphs = this.graphs;
-        if (this.oldGraphs && this.oldGraphs.length)
+        if (this.animation && this.oldGraphs && this.oldGraphs.length)
             this.animateBetweenStates();
 
 		this.graphs = [];

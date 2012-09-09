@@ -139,7 +139,7 @@ CanvizEntity.prototype = {
 									matches = str.match(/ ( +)/);
 									if (matches) {
 										var spaces = ' ';
-										matches[1].length.times(function() {
+                                        _(matches[1].length).times(function() {
 											spaces += '&nbsp;';
 										});
 										str = str.replace(/  +/, spaces);
@@ -164,7 +164,7 @@ CanvizEntity.prototype = {
 								} else {
                                     text = $('<span>');
 								}
-								text.text(str);
+								text.html(str);
                                 text.css({
 									fontSize: Math.round(fontSize * ctxScale * this.canviz.bbScale) + 'px',
 									fontFamily: fontFamily,
@@ -246,20 +246,6 @@ CanvizEntity.prototype = {
 				}
 				if (!redrawCanvasOnly) {
                     var xOff = 0, yOff = 0;
-                    /*
-                    if (this.canviz && this.canviz.animationDelta !== 'undefined' && this.canviz.oldRects) {
-                        var oldRect = this.canviz.oldRects[this.name];
-                        var newRect = this.bbRect;
-                        function interp(a, b) {
-                            return (b - a) * (1-this.canviz.animationDelta);
-                        }
-
-                        if (oldRect && newRect) {
-                            xOff = interp(oldRect.l, newRect.l);
-                            yOff = interp(oldRect.t, newRect.t);
-                        }
-                    }
-                    */
 					bbDiv.css({
 						position: 'absolute',
                         left:   Math.round(ctxScale * (this.bbRect.l + xOff) + this.canviz.padding) + 'px',
