@@ -58,7 +58,11 @@ CanvizEntity.prototype = {
 		if (!redrawCanvasOnly) {
 			this.initBB();
             var bbDiv = $('<div>');
+            bbDiv.addClass('entity');
 			this.canviz.elements.append(bbDiv);
+            var tooltip = this.getAttr('tooltip');
+            if (tooltip)
+                bbDiv.attr({title: tooltip});
 		}
 		_.each(this.drawAttrs, _.bind(function(command) {
 //			debug(command);

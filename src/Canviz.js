@@ -57,17 +57,20 @@ Canviz.prototype = {
 	setImagePath: function(imagePath) {
 		this.imagePath = imagePath;
 	},
-	load: function(url, urlParams) {
+	load: function(url, urlParams, cb) {
         debugClear();
         $.ajax({
             url: url,
 			data: urlParams,
 			success: _.bind(function(response) {
 				this.parse(response);
+                if (cb)
+                    cb();
             }, this)
 		});
 	},
 	parse: function(xdot) {
+        this.xdot = xdot;
         this.oldGraphs = this.graphs;
         if (this.animation && this.oldGraphs && this.oldGraphs.length)
             this.animateBetweenStates();
