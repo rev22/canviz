@@ -1,9 +1,9 @@
 /*
  * This file is part of Canviz. See http://www.canviz.org/
- * $Id: brewercolors.js 304 2011-12-16 15:04:58Z ryandesign.com $
+ * $Id: brewercolors.js 246 2008-12-27 08:36:24Z ryandesign.com $
  */
 
-Canviz.prototype.addColors({
+Canviz.prototype.colors.update({
 accent3:{
 1:'7fc97f',
 2:'beaed4',

@@ -1,6 +1,6 @@
 #
 # This file is part of Canviz. See http://www.canviz.org/
-# $Id: Makefile 305 2011-12-16 15:05:43Z ryandesign.com $
+# $Id: Makefile 259 2009-01-20 22:52:24Z ryandesign.com $
 #
 
 AWK=awk
@@ -11,7 +11,7 @@ TAIL=tail
 XARGS=xargs
 DOT=$(shell which dot)
 GRAPHVIZ_PREFIX=$(shell dirname $(shell dirname $(DOT)))
-GRAPHVIZ_SRC:=$(shell $(FIND) . \! -type f -name 'graphviz-*' | $(TAIL) -n 1 | $(SED) s%^\./%%)
+GRAPHVIZ_SRC:=$(shell $(FIND) . -type d -name 'graphviz-*' | $(TAIL) -n 1 | $(SED) s%^\./%%)
 GRAPHVIZ_LAYOUTS=circo dot fdp neato twopi
 GRAPHVIZ_FIRST_LAYOUT=$(firstword $(GRAPHVIZ_LAYOUTS))
 EXAMPLES_DIR=examples
@@ -71,7 +71,7 @@ $(EXAMPLE_GRAPHS_DIR)/$(GRAPHVIZ_FIRST_LAYOUT)/%.gv.txt: $(EXAMPLE_GRAPHS_SRC_DI
 
 define render-example-graph
 @echo "Rendering $(subst /$(GRAPHVIZ_FIRST_LAYOUT)/,/*/,$@)"
-@bash render_example_graph.sh $(EXAMPLE_GRAPHS_SRC_DIR) $(patsubst $(EXAMPLE_GRAPHS_SRC_DIR)/%,%,$<) $(EXAMPLE_GRAPHS_DIR) $(GRAPHVIZ_PREFIX) $(GRAPHVIZ_LAYOUTS)
+@./render_example_graph.sh $(EXAMPLE_GRAPHS_SRC_DIR) $(patsubst $(EXAMPLE_GRAPHS_SRC_DIR)/%,%,$<) $(EXAMPLE_GRAPHS_DIR) $(GRAPHVIZ_PREFIX) $(GRAPHVIZ_LAYOUTS)
 endef
 
 examples-images: $(EXAMPLE_GRAPH_IMAGES_DIR)
