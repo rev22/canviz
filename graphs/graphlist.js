@@ -3,6 +3,7 @@
  */
 
 var graphs = [
+'directed/git-digraph-mythryl.gv.txt',
 'directed/abstract.gv.txt',
 'directed/alf.gv.txt',
 'directed/arrows.gv.txt',
