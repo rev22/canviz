@@ -1,4 +1,4 @@
-digraph git {bgcolor=blue color=white
+digraph git { bgcolor=blue color=white
 "e9f467d8c5bf78be5c6136a825d336822ab4cc8f" [label="HEAD, master, e9f467d\nRe-enable parallel compilation\nMichele Bini 9 days ago",style=filled,fillcolor="#bbffbb",shape=hexagon]
 "aaa2e4f268c8223299eeb56c3f111ca71c633e79" -> "e9f467d8c5bf78be5c6136a825d336822ab4cc8f" [label="sh/make-compiler-libraries\n1 new lines\n1 deleted",fontcolor="white",color="white"]
 "aaa2e4f268c8223299eeb56c3f111ca71c633e79" [label="aaa2e4f\nAdd build dependency\non libgl1-mesa-dev (|\nlibgl-dev).\nMichele Bini 10 days ago",style=filled,fillcolor="#ffbbbb",shape=box]
