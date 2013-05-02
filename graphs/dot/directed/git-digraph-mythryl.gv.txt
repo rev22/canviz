@@ -1,6 +1,3 @@
 digraph git {
-	"e9" [label="HEAD, master, e9f467d", style=filled, fillcolor="#bbffbb", shape=hexagon ];
-	"aa" -> "e9" [label="sh/make-compiler-libraries", fontcolor="white", color="white"];
-	"aa" [ label="aaa2e4f", style=filled, fillcolor="#ffbbbb", shape=box ];
-	"b0" -> "aa" [ label="3 files", fontcolor="white", color="white" ];
+   "foo" -> "bar"
 }
