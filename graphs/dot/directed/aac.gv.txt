@@ -1,5 +1,4 @@
 digraph git {
-	graph [bgcolor=blue, color=white];
 	node [label="\N"];
 	graph [bb="0,0,490,402"];
 	e9f467d8c5bf78be5c6136a825d336822ab4cc8f [label="HEAD, master, e9f467d\nRe-enable parallel compilation\nMichele Bini 9 days ago", style=filled, fillcolor="#bbffbb", shape=hexagon, pos="245,48", width="5.0556", height="1.3333"];
