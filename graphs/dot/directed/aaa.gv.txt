@@ -1,4 +1,0 @@
-digraph git {
-	node [label="\N"];
-	graph [bb="0,0,100,402"];
-}

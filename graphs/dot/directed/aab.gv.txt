@@ -1,0 +1,10 @@
+digraph git {
+	graph [bgcolor=blue, color=white];
+	node [label="\N"];
+	graph [bb="0,0,490,402"];
+	e9f467d8c5bf78be5c6136a825d336822ab4cc8f [label="HEAD, master, e9f467d\nRe-enable parallel compilation\nMichele Bini 9 days ago", style=filled, fillcolor="#bbffbb", shape=hexagon, pos="245,48", width="5.0556", height="1.3333"];
+	aaa2e4f268c8223299eeb56c3f111ca71c633e79 [label="aaa2e4f\nAdd build dependency\non libgl1-mesa-dev (|\nlibgl-dev).\nMichele Bini 10 days ago", style=filled, fillcolor="#ffbbbb", shape=box, pos="245,231", width="2.5833", height="1.2917"];
+	b067d038df476c4efc900863dca50770160e00c6 [pos="245,384", width="6.8056", height="0.5"];
+	aaa2e4f268c8223299eeb56c3f111ca71c633e79 -> e9f467d8c5bf78be5c6136a825d336822ab4cc8f [label="sh/make-compiler-libraries\n1 new lines\n1 deleted", color=white, fontcolor=white, pos="e,245,96.162 245,184.35 245,160.61 245,131.53 245,106.33", lp="335,140"];
+	b067d038df476c4efc900863dca50770160e00c6 -> aaa2e4f268c8223299eeb56c3f111ca71c633e79 [label="3 files\n7 new lines\n1 deleted", color=white, fontcolor=white, pos="e,245,277.59 245,365.85 245,346.69 245,315.5 245,287.94", lp="285,322"];
+}
