@@ -3,7 +3,6 @@
  */
 
 var graphs = [
-'directed/mythryl.gv.txt',
 'directed/abstract.gv.txt',
 'directed/alf.gv.txt',
 'directed/arrows.gv.txt',
@@ -29,6 +28,7 @@ var graphs = [
 'directed/ldbxtried.gv.txt',
 'directed/longflat.gv.txt',
 'directed/mike.gv.txt',
+'directed/mythryl.gv.txt',
 'directed/NaN.gv.txt',
 'directed/nhg.gv.txt',
 'directed/oldarrows.gv.txt',
